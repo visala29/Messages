@@ -2,11 +2,20 @@ pipeline {
     agent any
 
     stages {
+        stage('List Files') {
+            steps {
+                script {
+                    // List files in the workspace for debugging
+                    bat 'dir'
+                }
+            }
+        }
         stage('Export Messages') {
             steps {
                 script {
-                    // Display workspace and file path for debugging
+                    // Print workspace directory and file path
                     echo "Workspace: ${env.WORKSPACE}"
+                    echo "Running batch file: ${env.WORKSPACE}\\export_messages.bat"
                     
                     // Run the batch file
                     bat "${env.WORKSPACE}\\export_messages.bat"
