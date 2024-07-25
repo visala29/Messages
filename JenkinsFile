@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Export Messages') {
+            steps {
+                script {
+                    // Running the batch file from the workspace where the repository is cloned
+                    bat 'export_messages.bat'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Messages exported successfully'
+        }
+        failure {
+            echo 'Failed to export messages'
+        }
+    }
+}
