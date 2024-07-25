@@ -5,8 +5,11 @@ pipeline {
         stage('Export Messages') {
             steps {
                 script {
-                    // Running the batch file from the workspace where the repository is cloned
-                    bat 'export_messages.bat'
+                    // Display workspace and file path for debugging
+                    echo "Workspace: ${env.WORKSPACE}"
+                    
+                    // Run the batch file
+                    bat "${env.WORKSPACE}\\export_messages.bat"
                 }
             }
         }
