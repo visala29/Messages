@@ -1,28 +1,33 @@
 @echo off
 setlocal
 
-REM RFHUTIL location
-set RFHUTIL_PATH="C:\path\to\rfhutilc.exe"
+REM Define paths
+set RFHUTIL_PATH="C:\Path\To\rfhutilc.exe"
+set OUTPUT_DIR="%CD%\Output"
 
-REM Queue Manager and Queue names
-set QMGR=YourQueueManager
-set QUEUE=YourQueue
+REM Debugging output
+echo Running export_messages.bat
+echo RFHUTIL_PATH: %RFHUTIL_PATH%
+echo OUTPUT_DIR: %OUTPUT_DIR%
+echo Current directory: %CD%
 
-REM Get current date in YYYYMMDD format
-for /f %%i in ('wmic os get localdatetime ^| find "."') do set datetime=%%i
-set datestamp=%datetime:~0,8%
-
-REM Output folder path
-set OUTPUT_DIR=\\network\path\to\save\messages\%QUEUE%_%datestamp%
+REM Check if RFHUTIL path exists
+if not exist %RFHUTIL_PATH% (
+    echo RFHUTIL.exe not found at %RFHUTIL_PATH%
+    exit /b 1
+)
 
 REM Create output directory
-if not exist %OUTPUT_DIR% mkdir %OUTPUT_DIR%
-
-REM Export messages one by one
-set count=1
-for /f "tokens=*" %%a in ('%RFHUTIL_PATH% -m %QMGR% -q %QUEUE% -g') do (
-    echo %%a > %OUTPUT_DIR%\message_%count%.txt
-    set /a count+=1
+if not exist %OUTPUT_DIR% (
+    echo Creating directory %OUTPUT_DIR%
+    mkdir %OUTPUT_DIR%
+) else (
+    echo Directory %OUTPUT_DIR% already exists
 )
+
+REM Example command to export messages
+REM Replace with actual RFHUTIL command
+echo Exporting messages...
+%RFHUTIL_PATH% -someoptions > %OUTPUT_DIR%\messages.txt
 
 endlocal
